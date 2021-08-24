@@ -19,6 +19,7 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.time.Duration;
 
 
 @Configuration
@@ -44,7 +45,7 @@ public class ApplicationConfig {
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, applicationProperties.getTimeout())
                                 .doOnConnected(conn -> conn
                                         .addHandlerLast(new ReadTimeoutHandler(10))
-                                        .addHandlerLast(new WriteTimeoutHandler(10)));
+                                        .addHandlerLast(new WriteTimeoutHandler(10))).responseTimeout(Duration.ofMillis(applicationProperties.getTimeout()));
 
         ClientHttpConnector connector = new ReactorClientHttpConnector(httpClient);
 
